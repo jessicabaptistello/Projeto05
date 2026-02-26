@@ -1,0 +1,163 @@
+.cards,
+.transacoes {
+  width: 100%;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+
+.cards-container {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 18px;
+  width: 100%;
+}
+
+.card {
+  border: 1px solid var(--border);
+  border-radius: 18px;
+  padding: 20px;
+  background: var(--surface);
+  box-shadow: var(--shadow);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+}
+
+.titulo-card {
+  color: var(--muted);
+  font-size: 13px;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  font-weight: 900;
+}
+
+.valor {
+  color: var(--text);
+  font-size: 26px;
+  font-weight: 900;
+  margin-top: 4px;
+}
+
+.informacao {
+  color: var(--primary);
+  font-size: 12px;
+  margin-top: 6px;
+}
+
+.expense-color {
+  color: var(--expense);
+}
+
+
+.transacoes {
+  display: grid;
+  grid-template-columns: 360px 1fr;
+  gap: 18px;
+  align-items: start;
+}
+
+
+.nova-transacao {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  background: var(--surface);
+  padding: 18px;
+  border-radius: 18px;
+  border: 1px solid var(--border);
+  box-shadow: var(--shadow);
+}
+
+.titulo-nova-transacao-container {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.titulo-nova-transacao {
+  color: var(--text);
+  font-size: 14px;
+  font-weight: 900;
+}
+
+.nova-transacao-icon {
+  color: var(--primary);
+  width: 28px;
+  height: 28px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid var(--primary);
+  border-radius: 999px;
+  font-size: 18px;
+  cursor: pointer;
+  background: var(--primary-soft);
+}
+
+.form-container {
+  width: 100%;
+  padding: 8px 0;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.form-container label {
+  color: var(--muted);
+  font-size: 12px;
+  font-weight: 800;
+}
+
+.form-container input,
+.form-container select {
+  padding: 10px 12px;
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  background: #fff;
+  color: var(--text);
+  outline: none;
+}
+
+.form-container input:focus,
+.form-container select:focus {
+  border-color: rgba(255, 95, 162, 0.6);
+  box-shadow: 0 0 0 4px var(--primary-soft);
+}
+
+.description-form {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.qtd-tipo-transacao-container {
+  display: flex;
+  gap: 12px;
+  width: 100%;
+}
+
+.qtd-container,
+.tipo-transacao-container {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  flex: 1;
+  min-width: 0;
+}
+
+
+.categoria-container {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.valor.positivo { color: var(--income); }
+.valor.negativo { color: var(--expense); }
+.valor.neutro   { color: var(--accent); }
+
+.item-transacao .valor-transacao.positivo { color: var(--income); }
+.item-transacao .valor-transacao.negativo { color: var(--expense); }
+.item-transacao .valor-transacao.neutro   { color: var(--accent); }

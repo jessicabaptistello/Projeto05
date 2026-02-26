@@ -1,0 +1,56 @@
+.button-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 8px;
+}
+
+.button-remover {
+  margin-left: 8px;
+  background: transparent;
+  border: 1px solid var(--border);
+  color: var(--muted);
+  border-radius: 10px;
+  padding: 3px 8px;
+  cursor: pointer;
+  font-weight: 900;
+  transition: 0.2s;
+}
+
+.button-remover:hover {
+  color: var(--text);
+  box-shadow: 0 0 0 4px rgba(179, 18, 74, 0.12);
+}
+
+.valor-transacao {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  gap: 10px;
+}
+
+.acoes-fixas {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.button-editar {
+  background: transparent;
+  border: 1px solid var(--border);
+  color: var(--muted);
+  border-radius: 10px;
+  padding: 3px 8px;
+  cursor: pointer;
+  font-weight: 900;
+  transition: 0.2s;
+}
+
+.button-editar:hover {
+  color: var(--text);
+  box-shadow: 0 0 0 4px rgba(179, 18, 74, 0.12);
+}
+
+.button-remover {
+  margin-left: 0;
+}
