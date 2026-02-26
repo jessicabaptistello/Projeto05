@@ -4,16 +4,16 @@ import {
   renderTotals,
   renderList,
   setupCategoryButtons,
-} from "./modulares/userInterface.ts";
+} from "./modulares/userInterface.js";
 
 import {
   obterTransacoes,
   limparTudo,
   exportarJSON,
   exportarCSV,
-} from "./modulares/state.ts";
+} from "./modulares/state.js";
 
-import { submitTransaction } from "./modulares/transactions.ts";
+import { submitTransaction } from "./modulares/transactions.js";
 
 function mostrarDataNoTopo() {
   const calendarioEl = document.querySelector(".calendario");

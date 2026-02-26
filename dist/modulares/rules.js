@@ -1,0 +1,7 @@
+export const RULES = {
+    DESCRICAO_MAX: 25,
+    VALOR_MAX_DIGITOS_INTEIRO: 7,
+    VALOR_MAX_DECIMAIS: 2,
+    VALOR_MAX: 9999999,
+    VALOR_MIN: 0.01,
+};
