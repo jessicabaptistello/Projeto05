@@ -33,7 +33,7 @@ export function atualizarTransacao(id, camposAtualizados) {
     transacoes = transacoes.map((t) => {
         if (t.id !== id)
             return t;
-        return Object.assign(Object.assign({}, t), camposAtualizados);
+        return { ...t, ...camposAtualizados };
     });
     salvar();
 }
@@ -64,7 +64,7 @@ export function exportarJSON() {
 export function exportarCSV() {
     const header = ["id", "descricao", "valor", "tipo", "categoria", "data"];
     function escapeCSV(v) {
-        const s = String(v !== null && v !== void 0 ? v : "");
+        const s = String(v ?? "");
         if (s.includes(",") || s.includes('"') || s.includes("\n")) {
             return `"${s.replaceAll('"', '""')}"`;
         }
@@ -72,7 +72,9 @@ export function exportarCSV() {
     }
     const lines = [header.join(",")];
     for (const t of transacoes) {
-        lines.push([t.id, t.descricao, t.valor, t.tipo, t.categoria, t.data].map(escapeCSV).join(","));
+        lines.push([t.id, t.descricao, t.valor, t.tipo, t.categoria, t.data]
+            .map(escapeCSV)
+            .join(","));
     }
     return lines.join("\n");
 }

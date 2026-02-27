@@ -1,9 +1,9 @@
 import { elements } from "./userInterface.js";
 import { adicionarTransacao } from "./state.js";
 import { RULES } from "./rules.js";
+import type { RefreshFn, TransactionInput, TransactionType } from "./types.js";
 
-
-const categoriasPorTipo = {
+const categoriasPorTipo: Record<TransactionType, string[]> = {
   receita: ["Ordenado", "Outros"],
   despesa: [
     "Alimentação",
@@ -17,30 +17,40 @@ const categoriasPorTipo = {
   poupanca: ["Poupança", "Outros"],
 };
 
-
-function dataDeHojePT() {
+function dataDeHojePT(): string {
   return new Date().toLocaleDateString("pt-PT");
 }
 
+type FormData = {
+  descricao: string;
+  valorTexto: string;
+  tipo: TransactionType;
+  categoria: string;
+  valor?: number; 
+};
 
-function lerFormulario() {
+function lerFormulario(): FormData {
+
+  const descricaoEl = elements.descricao!;
+  const quantidadeEl = elements.quantidade!;
+  const tipoEl = elements.tipo!;
+
   return {
-    descricao: elements.descricao.value.trim(),
-    valorTexto: String(elements.quantidade.value || "").trim(),
-    tipo: elements.tipo.value,
+    descricao: descricaoEl.value.trim(),
+    valorTexto: String(quantidadeEl.value || "").trim(),
+    tipo: tipoEl.value as TransactionType,
     categoria: elements.categoriaSelecionada || "Outros",
   };
 }
 
+function valorTextoEhValido(valorTexto: string): boolean {
+  const txt: string = String(valorTexto).trim();
 
-function valorTextoEhValido(valorTexto) {
-  const txt = String(valorTexto).trim();
-
-  const pattern = /^\d+([.,]\d{1,2})?$/;
+  const pattern: RegExp = /^\d+([.,]\d{1,2})?$/;
   if (!pattern.test(txt)) return false;
 
-  const normalized = txt.replace(",", ".");
-  const [inteiro, dec = ""] = normalized.split(".");
+  const normalized: string = txt.replace(",", ".");
+  const [inteiro, dec = ""]: string[] = normalized.split(".");
 
   if (inteiro.length > RULES.VALOR_MAX_DIGITOS_INTEIRO) return false;
   if (dec.length > RULES.VALOR_MAX_DECIMAIS) return false;
@@ -48,12 +58,12 @@ function valorTextoEhValido(valorTexto) {
   return true;
 }
 
-function converterValorTextoParaNumero(valorTexto) {
-  const normalized = String(valorTexto).trim().replace(",", ".");
+function converterValorTextoParaNumero(valorTexto: string): number {
+  const normalized: string = String(valorTexto).trim().replace(",", ".");
   return Number(normalized);
 }
 
-function validarFormulario(data) {
+function validarFormulario(data: FormData): boolean {
   if (!data.descricao) {
     alert("Preencha a descrição.");
     return false;
@@ -64,23 +74,19 @@ function validarFormulario(data) {
     return false;
   }
 
-
-  const tiposValidos = ["receita", "despesa", "poupanca"];
+  const tiposValidos: TransactionType[] = ["receita", "despesa", "poupanca"];
   if (!tiposValidos.includes(data.tipo)) {
     alert("Selecione um tipo válido.");
     return false;
   }
 
- 
-  const permitidas = categoriasPorTipo[data.tipo] || [];
-
+  const permitidas: string[] = categoriasPorTipo[data.tipo] || [];
   if (!permitidas.includes(data.categoria)) {
     alert(
       `A categoria "${data.categoria}" não pode ser usada com o tipo "${data.tipo}".`
     );
     return false;
   }
-
 
   if (!data.valorTexto) {
     alert("Insira um valor.");
@@ -94,7 +100,7 @@ function validarFormulario(data) {
     return false;
   }
 
-  const numero = converterValorTextoParaNumero(data.valorTexto);
+  const numero: number = converterValorTextoParaNumero(data.valorTexto);
 
   if (!numero || Number.isNaN(numero)) {
     alert("Valor inválido.");
@@ -112,30 +118,32 @@ function validarFormulario(data) {
   }
 
   data.valor = Number(numero.toFixed(2));
-
   return true;
 }
 
+function limparFormulario(): void {
+  const descricaoEl = elements.descricao!;
+  const quantidadeEl = elements.quantidade!;
+  const tipoEl = elements.tipo!;
 
-function limparFormulario() {
-  elements.descricao.value = "";
-  elements.quantidade.value = "";
-  elements.tipo.value = "receita";
+  descricaoEl.value = "";
+  quantidadeEl.value = "";
+  tipoEl.value = "receita";
 }
 
-
-function enviarTransacao(refresh) {
-  const data = lerFormulario();
+function enviarTransacao(refresh: RefreshFn): void {
+  const data: FormData = lerFormulario();
   if (!validarFormulario(data)) return;
 
-  adicionarTransacao({
+  const payload: TransactionInput = {
     descricao: data.descricao,
-    valor: data.valor,
+    valor: data.valor!, 
     tipo: data.tipo,
     categoria: data.categoria,
     data: dataDeHojePT(),
-  });
+  };
 
+  adicionarTransacao(payload);
   limparFormulario();
   refresh();
 }

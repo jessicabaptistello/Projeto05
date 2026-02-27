@@ -82,14 +82,18 @@ export function setupCategoryButtons() {
 }
 export function renderTotals() {
     const { balance, income, expense, savings } = calcularTotais();
-    elements.totalBalance.textContent = formatEUR(balance);
-    elements.totalIncome.textContent = formatEUR(income);
-    elements.totalExpense.textContent = formatEUR(expense);
-    elements.totalSavings.textContent = formatEUR(savings);
-    setStatusClass(elements.totalBalance, balance < 0 ? "negativo" : "positivo");
-    setStatusClass(elements.totalIncome, "positivo");
-    setStatusClass(elements.totalExpense, "negativo");
-    setStatusClass(elements.totalSavings, "neutro");
+    const totalBalance = elements.totalBalance;
+    const totalIncome = elements.totalIncome;
+    const totalExpense = elements.totalExpense;
+    const totalSavings = elements.totalSavings;
+    totalBalance.textContent = formatEUR(balance);
+    totalIncome.textContent = formatEUR(income);
+    totalExpense.textContent = formatEUR(expense);
+    totalSavings.textContent = formatEUR(savings);
+    setStatusClass(totalBalance, balance < 0 ? "negativo" : "positivo");
+    setStatusClass(totalIncome, "positivo");
+    setStatusClass(totalExpense, "negativo");
+    setStatusClass(totalSavings, "neutro");
 }
 function pedirDescricao(atual) {
     while (true) {
@@ -161,7 +165,11 @@ function criarItemTransacao(t, refresh) {
         : isReceita
             ? "etiqueta-receita"
             : "etiqueta-poupanca";
-    const etiquetaTexto = isDespesa ? "DESPESA" : isReceita ? "RECEITA" : "POUPANÇA";
+    const etiquetaTexto = isDespesa
+        ? "DESPESA"
+        : isReceita
+            ? "RECEITA"
+            : "POUPANÇA";
     const valorClass = isDespesa ? "negativo" : isPoupanca ? "neutro" : "positivo";
     const div = document.createElement("div");
     div.className = "item-transacao";
@@ -186,7 +194,10 @@ function criarItemTransacao(t, refresh) {
       </span>
     </div>
   `;
-    div.querySelector(".button-editar").addEventListener("click", () => {
+    const btnEditar = div.querySelector(".button-editar");
+    if (!btnEditar)
+        throw new Error("Botão editar não encontrado");
+    btnEditar.addEventListener("click", () => {
         const novaDescricao = pedirDescricao(t.descricao);
         if (novaDescricao === null)
             return;
@@ -203,15 +214,19 @@ function criarItemTransacao(t, refresh) {
         });
         refresh();
     });
-    div.querySelector(".button-remover").addEventListener("click", () => {
+    const btnRemover = div.querySelector(".button-remover");
+    if (!btnRemover)
+        throw new Error("Botão remover não encontrado");
+    btnRemover.addEventListener("click", () => {
         removerTransacao(t.id);
         refresh();
     });
     return div;
 }
 export function renderList(transactions, refresh) {
-    elements.lista.innerHTML = "";
+    const lista = elements.lista;
+    lista.innerHTML = "";
     for (const t of transactions) {
-        elements.lista.appendChild(criarItemTransacao(t, refresh));
+        lista.appendChild(criarItemTransacao(t, refresh));
     }
 }

@@ -1,22 +1,37 @@
-const KEY = "transactions_v1";
+import type { Transaction } from "./types.js";
 
-function normalizarTransacao(t) {
+const KEY: string = "transactions_v1";
+
+function normalizarTransacao(t: unknown): Transaction {
+  if (typeof t !== "object" || t === null) {
+    return {
+      id: `${Date.now()}-${Math.floor(Math.random() * 100000)}`,
+      descricao: "",
+      valor: 0,
+      tipo: "receita",
+      categoria: "Outros",
+      data: "",
+    };
+  }
+
+  const obj: Record<string, unknown> = t as Record<string, unknown>;
+
   return {
-    id: t?.id ?? `${Date.now()}-${Math.floor(Math.random() * 100000)}`,
-    descricao: String(t?.descricao ?? ""),
-    valor: Number(t?.valor) || 0,
-    tipo: t?.tipo ?? "receita",
-    categoria: t?.categoria ?? "Outros",
-    data: t?.data ?? t?.date ?? "",
+    id: String(obj.id ?? `${Date.now()}-${Math.floor(Math.random() * 100000)}`),
+    descricao: String(obj.descricao ?? ""),
+    valor: Number(obj.valor) || 0,
+    tipo: (obj.tipo as Transaction["tipo"]) ?? "receita",
+    categoria: String(obj.categoria ?? "Outros"),
+    data: String(obj.data ?? obj.date ?? ""),
   };
 }
 
-export function carregarTransacoes() {
-  const raw = localStorage.getItem(KEY);
+export function carregarTransacoes(): Transaction[] {
+  const raw: string | null = localStorage.getItem(KEY);
   if (!raw) return [];
 
   try {
-    const data = JSON.parse(raw);
+    const data: unknown = JSON.parse(raw);
     if (!Array.isArray(data)) return [];
     return data.map(normalizarTransacao);
   } catch {
@@ -24,6 +39,6 @@ export function carregarTransacoes() {
   }
 }
 
-export function guardarTransacoes(transacoes) {
+export function guardarTransacoes(transacoes: Transaction[]): void {
   localStorage.setItem(KEY, JSON.stringify(transacoes));
 }

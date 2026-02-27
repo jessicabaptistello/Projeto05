@@ -1,13 +1,23 @@
 const KEY = "transactions_v1";
 function normalizarTransacao(t) {
-    var _a, _b, _c, _d, _e, _f;
+    if (typeof t !== "object" || t === null) {
+        return {
+            id: `${Date.now()}-${Math.floor(Math.random() * 100000)}`,
+            descricao: "",
+            valor: 0,
+            tipo: "receita",
+            categoria: "Outros",
+            data: "",
+        };
+    }
+    const obj = t;
     return {
-        id: (_a = t === null || t === void 0 ? void 0 : t.id) !== null && _a !== void 0 ? _a : `${Date.now()}-${Math.floor(Math.random() * 100000)}`,
-        descricao: String((_b = t === null || t === void 0 ? void 0 : t.descricao) !== null && _b !== void 0 ? _b : ""),
-        valor: Number(t === null || t === void 0 ? void 0 : t.valor) || 0,
-        tipo: (_c = t === null || t === void 0 ? void 0 : t.tipo) !== null && _c !== void 0 ? _c : "receita",
-        categoria: (_d = t === null || t === void 0 ? void 0 : t.categoria) !== null && _d !== void 0 ? _d : "Outros",
-        data: (_f = (_e = t === null || t === void 0 ? void 0 : t.data) !== null && _e !== void 0 ? _e : t === null || t === void 0 ? void 0 : t.date) !== null && _f !== void 0 ? _f : "",
+        id: String(obj.id ?? `${Date.now()}-${Math.floor(Math.random() * 100000)}`),
+        descricao: String(obj.descricao ?? ""),
+        valor: Number(obj.valor) || 0,
+        tipo: obj.tipo ?? "receita",
+        categoria: String(obj.categoria ?? "Outros"),
+        data: String(obj.data ?? obj.date ?? ""),
     };
 }
 export function carregarTransacoes() {
@@ -20,7 +30,7 @@ export function carregarTransacoes() {
             return [];
         return data.map(normalizarTransacao);
     }
-    catch (_a) {
+    catch {
         return [];
     }
 }

@@ -18,10 +18,13 @@ function dataDeHojePT() {
     return new Date().toLocaleDateString("pt-PT");
 }
 function lerFormulario() {
+    const descricaoEl = elements.descricao;
+    const quantidadeEl = elements.quantidade;
+    const tipoEl = elements.tipo;
     return {
-        descricao: elements.descricao.value.trim(),
-        valorTexto: String(elements.quantidade.value || "").trim(),
-        tipo: elements.tipo.value,
+        descricao: descricaoEl.value.trim(),
+        valorTexto: String(quantidadeEl.value || "").trim(),
+        tipo: tipoEl.value,
         categoria: elements.categoriaSelecionada || "Outros",
     };
 }
@@ -86,21 +89,25 @@ function validarFormulario(data) {
     return true;
 }
 function limparFormulario() {
-    elements.descricao.value = "";
-    elements.quantidade.value = "";
-    elements.tipo.value = "receita";
+    const descricaoEl = elements.descricao;
+    const quantidadeEl = elements.quantidade;
+    const tipoEl = elements.tipo;
+    descricaoEl.value = "";
+    quantidadeEl.value = "";
+    tipoEl.value = "receita";
 }
 function enviarTransacao(refresh) {
     const data = lerFormulario();
     if (!validarFormulario(data))
         return;
-    adicionarTransacao({
+    const payload = {
         descricao: data.descricao,
         valor: data.valor,
         tipo: data.tipo,
         categoria: data.categoria,
         data: dataDeHojePT(),
-    });
+    };
+    adicionarTransacao(payload);
     limparFormulario();
     refresh();
 }

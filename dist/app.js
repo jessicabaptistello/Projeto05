@@ -1,14 +1,15 @@
-import { elements, initUI, renderTotals, renderList, setupCategoryButtons, } from "./modulares/userInterface.js";
-import { obterTransacoes, limparTudo, exportarJSON, exportarCSV, } from "./modulares/state.js";
+import { elements, initUI, renderTotals, renderList, setupCategoryButtons } from "./modulares/userInterface.js";
+import { obterTransacoes, limparTudo, exportarJSON, exportarCSV } from "./modulares/state.js";
 import { submitTransaction } from "./modulares/transactions.js";
 function mostrarDataNoTopo() {
     const calendarioEl = document.querySelector(".calendario");
     if (!calendarioEl)
         return;
-    calendarioEl.textContent = `Hoje: ${new Date().toLocaleDateString("pt-PT")}`;
+    calendarioEl.textContent =
+        `Hoje: ${new Date().toLocaleDateString("pt-PT")}`;
 }
 function limparTextoDoValor(texto) {
-    let s = String(texto !== null && texto !== void 0 ? texto : "");
+    let s = String(texto ?? "");
     s = s.replace(/[^\d.,]/g, "");
     const posVirgula = s.indexOf(",");
     const posPonto = s.indexOf(".");
@@ -67,8 +68,8 @@ function configurarInputDeValor() {
 function aplicarFiltros(transacoes) {
     const filtroTexto = document.querySelector(".filtro-texto");
     const filtroTipo = document.querySelector(".filtro-tipo");
-    const texto = ((filtroTexto === null || filtroTexto === void 0 ? void 0 : filtroTexto.value) || "").toLowerCase().trim();
-    const tipo = (filtroTipo === null || filtroTipo === void 0 ? void 0 : filtroTipo.value) || "todos";
+    const texto = (filtroTexto?.value || "").toLowerCase().trim();
+    const tipo = filtroTipo?.value || "todos";
     return transacoes.filter((t) => {
         const desc = (t.descricao || "").toLowerCase();
         const okTexto = texto === "" || desc.includes(texto);
@@ -76,12 +77,12 @@ function aplicarFiltros(transacoes) {
         return okTexto && okTipo;
     });
 }
-function atualizarTela() {
+const atualizarTela = () => {
     const todas = obterTransacoes();
     const filtradas = aplicarFiltros(todas);
     renderTotals();
     renderList(filtradas, atualizarTela);
-}
+};
 function baixarArquivo({ filename, content, mimeType }) {
     const blob = new Blob([content], { type: mimeType });
     const url = URL.createObjectURL(blob);
@@ -94,17 +95,23 @@ function baixarArquivo({ filename, content, mimeType }) {
     URL.revokeObjectURL(url);
 }
 function configurarBotoes() {
-    elements.buttonAdicionar.addEventListener("click", (e) => {
-        e.preventDefault();
-        submitTransaction(atualizarTela);
-    });
-    elements.buttonLimpar.addEventListener("click", () => {
-        const ok = confirm("Tem certeza que deseja excluir todas as transações?");
-        if (!ok)
-            return;
-        limparTudo();
-        atualizarTela();
-    });
+    const btnAdd = elements.buttonAdicionar;
+    const btnLimpar = elements.buttonLimpar;
+    if (btnAdd) {
+        btnAdd.addEventListener("click", (e) => {
+            e.preventDefault();
+            submitTransaction(atualizarTela);
+        });
+    }
+    if (btnLimpar) {
+        btnLimpar.addEventListener("click", () => {
+            const ok = confirm("Tem certeza que deseja excluir todas as transações?");
+            if (!ok)
+                return;
+            limparTudo();
+            atualizarTela();
+        });
+    }
     const botaoExportar = document.querySelector(".exportar");
     if (botaoExportar) {
         botaoExportar.addEventListener("click", () => {
