@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <script type="module" src="./dist/app.js" defer></script>
+
+  <link rel="stylesheet" href="css/rootEBody.css" />
+  <link rel="stylesheet" href="css/titles.css" />
+  <link rel="stylesheet" href="css/cardsAndContainers.css" />
+  <link rel="stylesheet" href="css/buttons.css" />
+  <link rel="stylesheet" href="css/style.css" />
+  <link rel="stylesheet" href="css/responsividadeMobile.css" />
+
+  <title>Finanças Pessoais</title>
+</head>
+
+<body>
+  <header class="header">
+    <div class="titulo-container">
+      <h2 class="titulo">Visão geral</h2>
+      <p class="subtitle">Bem vinda de volta 🌼, vamos organizar suas finanças?</p>
+    </div>
+
+    <div class="header-actions">
+      <div class="calendario">Hoje: --/--/----</div>
+      <button class="exportar" type="button">Exportar</button>
+    </div>
+  </header>
+
+  <main class="main">
+    <section class="cards">
+      <div class="cards-container">
+        <div class="card">
+          <div class="titulo-card">Balanço</div>
+          <div class="valor" id="total-balance">€ 0,00</div>
+          <!-- <div class="informacao">(atualizado automaticamente)</div> -->
+        </div>
+
+        <div class="card">
+          <div class="titulo-card">Rendimento total</div>
+          <div class="valor" id="total-income">€ 0,00</div>
+        </div>
+
+        <div class="card">
+          <div class="titulo-card">Despesas acumuladas</div>
+          <div class="valor expense-color" id="total-expense">€ 0,00</div>
+        </div>
+
+        <div class="card">
+          <div class="titulo-card">Poupança</div>
+          <div class="valor" id="total-savings">€ 0,00</div>
+          <!-- <div class="informacao">Total poupado</div> -->
+        </div>
+      </div>
+    </section>
+
+    <section class="transacoes">
+      <div class="nova-transacao">
+        <div class="titulo-nova-transacao-container">
+          <p class="titulo-nova-transacao">Nova Transação</p>
+        </div>
+
+        <div class="form-container">
+          <div class="description-form">
+            <label for="descricao">Descrição</label>
+            
+            <input type="text" id="descricao" placeholder="ex. Renda mensal" maxlength="25" />
+          </div>
+
+          <div class="qtd-tipo-transacao-container">
+            <div class="qtd-container">
+              <label for="quantidade">Valor</label>
+              <input type="text" id="quantidade" placeholder="ex. 1000,50" inputmode="decimal" autocomplete="off" />
+            </div>
+
+            <div class="tipo-transacao-container">
+              <label for="tipo-transacao">Tipo</label>
+              <select name="tipo-transacao" id="tipo-transacao">
+                <option value="receita">Receita</option>
+                <option value="poupanca">Poupança</option>
+                <option value="despesa">Despesa</option>
+              </select>
+            </div>
+          </div>
+        </div>
+
+        <div class="categoria-container">
+          <button class="categorias" type="button" data-category="Alimentação">Despesas com alimentação</button>
+          <button class="categorias" type="button" data-category="Educação">Despesas com educação</button>
+          <button class="categorias" type="button" data-category="Ordenado">Ordenado</button>
+        </div>
+
+        <div class="categoria-container">
+          <button class="categorias" type="button" data-category="Habitação">Despesas com habitação</button>
+          <button class="categorias" type="button" data-category="Saúde">Despesas com saúde</button>
+          <button class="categorias" type="button" data-category="Outros">Outros</button>
+        </div>
+
+        <div class="categoria-container">
+          <button class="categorias" type="button" data-category="Lazer">Lazer - Diversos</button>
+          <button class="categorias" type="button" data-category="Ginásio">Ginásio</button>
+          <button class="categorias" type="button" data-category="Poupança">Outras Entradas</button>
+        </div>
+
+        <button class="adiciona-historia" type="button">
+          <div class="button-container">
+            <p class="button-text">Adicionar</p>
+          </div>
+        </button>
+      </div>
+
+      <article class="historico">
+        <div class="titulo-historico-container">
+          <h3 class="sub-titulo-historico">Transações recentes</h3>
+          <button class="limpar-tudo" type="button" title="Apagar tudo">Limpar</button>
+        </div>
+
+        
+        <div class="filtros">
+          <input type="text" class="filtro-texto" placeholder="Pesquisar..." />
+          <select class="filtro-tipo">
+            <option value="todos">Todos</option>
+            <option value="receita">Receita</option>
+            <option value="despesa">Despesa</option>
+            <option value="poupanca">Poupança</option>
+          </select>
+        </div>
+
+        <div class="table-container">
+          <div class="cabecalho-tabela">
+            <span>TRANSAÇÃO</span>
+            <span>CATEGORIA</span>
+            <span>DATA</span>
+            <span>VALOR</span>
+          </div>
+
+          <div class="lista-transacoes"></div>
+
+          <div class="rodape-tabela">
+            <!-- <a href="#" class="link-extrato">VER EXTRATO COMPLETO &rarr;</a> -->
+          </div>
+        </div>
+      </article>
+    </section>
+  </main>
+
+  <footer class="footer">
+    <p>© 2026 Minhas Finanças. Todos os direitos reservados.</p>
+  </footer>
+</body>
+</html>

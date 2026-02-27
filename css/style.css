@@ -1,0 +1,199 @@
+.calendario {
+  color: var(--muted);
+  font-size: 12px;
+  padding: 10px 14px;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  box-shadow: var(--shadow);
+}
+
+.exportar {
+  background: var(--primary);
+  color: #fff;
+  padding: 10px 16px;
+  border: none;
+  border-radius: 12px;
+  cursor: pointer;
+  font-weight: 800;
+  box-shadow: var(--shadow);
+  transition: 0.2s;
+}
+
+.exportar:hover { filter: brightness(1.02); }
+.exportar:active { transform: translateY(1px); }
+
+
+.categorias {
+  color: var(--text);
+  font-size: 12px;
+  padding: 10px 12px;
+  border: 1px solid var(--border);
+  border-radius: 999px;
+  background: #fff;
+  cursor: pointer;
+  font-weight: 800;
+  transition: 0.2s;
+}
+
+.categorias:hover {
+  box-shadow: 0 0 0 4px var(--accent-soft);
+  border-color: rgba(139, 92, 246, 0.35);
+}
+
+.categorias.is-active {
+  background: var(--accent-soft);
+  border-color: rgba(139, 92, 246, 0.55);
+}
+
+
+.adiciona-historia {
+  background: var(--primary);
+  color: #fff;
+  padding: 12px 14px;
+  border: none;
+  border-radius: 14px;
+  cursor: pointer;
+  margin-top: 6px;
+  font-weight: 900;
+  box-shadow: var(--shadow);
+  transition: 0.2s;
+}
+
+.adiciona-historia:hover { filter: brightness(1.02); }
+.adiciona-historia:active { transform: translateY(1px); }
+
+
+.historico {
+  display: flex;
+  flex-direction: column;
+  background: var(--surface);
+  padding: 18px;
+  border-radius: 18px;
+  border: 1px solid var(--border);
+  width: 100%;
+  box-shadow: var(--shadow);
+}
+
+
+.limpar-tudo {
+  padding: 8px 12px;
+  border-radius: 12px;
+  border: 1px solid var(--border);
+  background: #fff;
+  color: var(--muted);
+  cursor: pointer;
+  font-weight: 900;
+  transition: 0.2s;
+}
+
+.limpar-tudo:hover {
+  box-shadow: 0 0 0 4px var(--primary-soft);
+  color: var(--text);
+}
+
+.cabecalho-tabela {
+  display: grid;
+  grid-template-columns: 2fr 1fr 1fr 1fr;
+  padding: 10px 12px;
+  color: var(--muted);
+  font-size: 11px;
+  font-weight: 900;
+  letter-spacing: 1px;
+  border-bottom: 1px solid var(--border);
+}
+
+.item-transacao {
+  display: grid;
+  grid-template-columns: 2fr 1fr 1fr 1fr;
+  align-items: center;
+  background: #fff;
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  padding: 12px;
+  margin-top: 12px;
+}
+
+.info-transacao {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.caixa-icone {
+  width: 28px;
+  height: 28px;
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--primary-soft);
+  border: 1px solid rgba(255, 95, 162, 0.25);
+}
+
+.real-icon {
+  font-size: 13px;
+  color: var(--primary);
+  font-weight: 900;
+}
+
+.nome-transacao {
+  color: var(--text);
+  font-size: 12px;
+  font-weight: 900;
+}
+
+.etiqueta {
+  padding: 4px 8px;
+  border-radius: 999px;
+  font-size: 9px;
+  font-weight: 900;
+  display: inline-block;
+  margin-top: 4px;
+  border: 1px solid var(--border);
+  background: #fff;
+}
+
+.etiqueta-receita { color: var(--income); }
+.etiqueta-despesa { color: var(--expense); }
+.etiqueta-poupanca { color: var(--accent); }
+
+.data-transacao {
+  color: var(--muted);
+  font-size: 12px;
+}
+
+.valor-transacao {
+  font-weight: 900;
+  text-align: right;
+  font-size: 12px;
+}
+
+.rodape-tabela {
+  text-align: center;
+  margin-top: 16px;
+}
+
+.footer {
+  grid-area: footer;
+  background: transparent;
+  color: var(--muted);
+  font-weight: 800;
+  padding: 16px;
+  text-align: center;
+}
+
+.filtros {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 12px;
+}
+
+.filtro-texto,
+.filtro-tipo {
+  padding: 10px 12px;
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  background: #fff;
+  color: var(--text);
+}
