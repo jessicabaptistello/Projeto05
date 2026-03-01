@@ -9,7 +9,7 @@ export interface Transaction {
   data: string;
 }
 
-export type TransactionInput = Omit<Transaction, "id">;
+export type TransactionInput = Omit<Transaction, "id">; 
 
 export type Totals = {
   balance: number;
@@ -18,7 +18,7 @@ export type Totals = {
   savings: number;
 };
 
-export type RefreshFn = () => void;
+export type RefreshFn = () => void; 
 
 export type DownloadPayload = {
   filename: string;

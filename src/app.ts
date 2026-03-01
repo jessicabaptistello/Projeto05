@@ -1,10 +1,4 @@
-import {
-  elements,
-  initUI,
-  renderTotals,
-  renderList,
-  setupCategoryButtons,
-} from "./modulares/userInterface.js";
+import { elements, initUI, renderTotals, renderList, setupCategoryButtons } from "./modulares/userInterface.js";
 import { obterTransacoes, limparTudo, exportarJSON, exportarCSV } from "./modulares/state.js";
 import { submitTransaction } from "./modulares/transactions.js";
 import type { DownloadPayload, Transaction, RefreshFn } from "./modulares/types.js";
@@ -12,7 +6,9 @@ import type { DownloadPayload, Transaction, RefreshFn } from "./modulares/types.
 function mostrarDataNoTopo(): void {
   const calendarioEl: Element | null = document.querySelector(".calendario");
   if (!calendarioEl) return;
-  (calendarioEl as HTMLElement).textContent = `Hoje: ${new Date().toLocaleDateString("pt-PT")}`;
+
+  (calendarioEl as HTMLElement).textContent =
+    `Hoje: ${new Date().toLocaleDateString("pt-PT")}`;
 }
 
 function limparTextoDoValor(texto: string): string {
@@ -53,7 +49,6 @@ function limparTextoDoValor(texto: string): string {
 
   if (inteiro.length > 7) inteiro = inteiro.slice(0, 7);
   if (decimal.length > 2) decimal = decimal.slice(0, 2);
-
   if (posSeparador === -1) return inteiro;
   if (decimal.length === 0) return `${inteiro}${separador}`;
   return `${inteiro}${separador}${decimal}`;
@@ -74,8 +69,8 @@ function configurarInputDeValor(): void {
 }
 
 function aplicarFiltros(transacoes: Transaction[]): Transaction[] {
-  const filtroTexto = document.querySelector(".filtro-texto") as HTMLInputElement | null;
-  const filtroTipo = document.querySelector(".filtro-tipo") as HTMLSelectElement | null;
+  const filtroTexto = document.querySelector<HTMLInputElement>(".filtro-texto");
+  const filtroTipo = document.querySelector<HTMLSelectElement>(".filtro-tipo");
 
   const texto: string = (filtroTexto?.value || "").toLowerCase().trim();
   const tipo: string = filtroTipo?.value || "todos";
@@ -103,7 +98,6 @@ function baixarArquivo({ filename, content, mimeType }: DownloadPayload): void {
   const a: HTMLAnchorElement = document.createElement("a");
   a.href = url;
   a.download = filename;
-
   document.body.appendChild(a);
   a.click();
   a.remove();
@@ -126,12 +120,13 @@ function configurarBotoes(): void {
     btnLimpar.addEventListener("click", () => {
       const ok: boolean = confirm("Tem certeza que deseja excluir todas as transações?");
       if (!ok) return;
+
       limparTudo();
       atualizarTela();
     });
   }
 
-  const botaoExportar = document.querySelector(".exportar");
+  const botaoExportar = document.querySelector<HTMLElement>(".exportar");
   if (botaoExportar) {
     botaoExportar.addEventListener("click", () => {
       const transacoes: Transaction[] = obterTransacoes();
@@ -141,7 +136,10 @@ function configurarBotoes(): void {
         return;
       }
 
-      const stamp: string = new Date().toISOString().replaceAll(":", "-").replaceAll(".", "-");
+      const stamp: string = new Date()
+        .toISOString()
+        .replaceAll(":", "-")
+        .replaceAll(".", "-");
 
       baixarArquivo({
         filename: `minhas-financas-${stamp}.json`,
@@ -157,8 +155,8 @@ function configurarBotoes(): void {
     });
   }
 
-  const filtroTexto = document.querySelector(".filtro-texto");
-  const filtroTipo = document.querySelector(".filtro-tipo");
+  const filtroTexto = document.querySelector<HTMLInputElement>(".filtro-texto");
+  const filtroTipo = document.querySelector<HTMLSelectElement>(".filtro-tipo");
 
   if (filtroTexto) filtroTexto.addEventListener("input", atualizarTela);
   if (filtroTipo) filtroTipo.addEventListener("change", atualizarTela);
@@ -172,5 +170,6 @@ document.addEventListener("DOMContentLoaded", () => {
   setupCategoryButtons();
   configurarInputDeValor();
   configurarBotoes();
+
   atualizarTela();
 });

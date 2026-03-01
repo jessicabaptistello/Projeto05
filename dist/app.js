@@ -1,11 +1,12 @@
-import { elements, initUI, renderTotals, renderList, setupCategoryButtons, } from "./modulares/userInterface.js";
+import { elements, initUI, renderTotals, renderList, setupCategoryButtons } from "./modulares/userInterface.js";
 import { obterTransacoes, limparTudo, exportarJSON, exportarCSV } from "./modulares/state.js";
 import { submitTransaction } from "./modulares/transactions.js";
 function mostrarDataNoTopo() {
     const calendarioEl = document.querySelector(".calendario");
     if (!calendarioEl)
         return;
-    calendarioEl.textContent = `Hoje: ${new Date().toLocaleDateString("pt-PT")}`;
+    calendarioEl.textContent =
+        `Hoje: ${new Date().toLocaleDateString("pt-PT")}`;
 }
 function limparTextoDoValor(texto) {
     let s = String(texto ?? "");
@@ -119,7 +120,10 @@ function configurarBotoes() {
                 alert("Não há transações para exportar.");
                 return;
             }
-            const stamp = new Date().toISOString().replaceAll(":", "-").replaceAll(".", "-");
+            const stamp = new Date()
+                .toISOString()
+                .replaceAll(":", "-")
+                .replaceAll(".", "-");
             baixarArquivo({
                 filename: `minhas-financas-${stamp}.json`,
                 content: exportarJSON(),

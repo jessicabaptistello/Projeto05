@@ -41,17 +41,18 @@ export function limparTudo(): void {
 
 export function atualizarTransacao(
   id: string,
-  camposAtualizados: Partial<Transaction>
+  camposAtualizados: Partial<TransactionInput>
 ): void {
   transacoes = transacoes.map((t) => {
     if (t.id !== id) return t;
     return { ...t, ...camposAtualizados };
   });
+
   salvar();
 }
 
 export function calcularTotais(): Totals {
-  return transacoes.reduce(
+  return transacoes.reduce<Totals>(
     (acc, t) => {
       if (t.tipo === "receita") {
         acc.income += t.valor;
@@ -69,12 +70,15 @@ export function calcularTotais(): Totals {
 }
 
 export function exportarJSON(): string {
-  const data: { exportedAt: string; total: number; transactions: Transaction[] } =
-    {
-      exportedAt: new Date().toISOString(),
-      total: transacoes.length,
-      transactions: transacoes,
-    };
+  const data: {
+    exportedAt: string;
+    total: number;
+    transactions: Transaction[];
+  } = {
+    exportedAt: new Date().toISOString(),
+    total: transacoes.length,
+    transactions: transacoes,
+  };
 
   return JSON.stringify(data, null, 2);
 }
@@ -93,7 +97,11 @@ export function exportarCSV(): string {
   const lines: string[] = [header.join(",")];
 
   for (const t of transacoes) {
-    lines.push([t.id, t.descricao, t.valor, t.tipo, t.categoria, t.data].map(escapeCSV).join(","));
+    lines.push(
+      [t.id, t.descricao, t.valor, t.tipo, t.categoria, t.data]
+        .map(escapeCSV)
+        .join(",")
+    );
   }
 
   return lines.join("\n");

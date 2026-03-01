@@ -55,7 +55,7 @@ export function initUI() {
         missing.push("#total-savings");
     if (missing.length > 0) {
         console.error("Elementos não encontrados:", missing);
-        alert("Erro.\nVeja o Console (F12).");
+        alert("Erro. Veja o Console (F12).");
         return false;
     }
     return true;
@@ -120,7 +120,7 @@ function pedirValor(atual) {
         const txt = input.trim();
         const pattern = /^\d+([.,]\d{1,2})?$/;
         if (!pattern.test(txt)) {
-            alert("Valor inválido.\nEx: 10,50 ou 10.50");
+            alert("Valor inválido. Ex: 10,50 ou 10.50");
             continue;
         }
         const normal = txt.replace(",", ".");
@@ -160,25 +160,40 @@ function criarItemTransacao(t, refresh) {
     const isReceita = t.tipo === "receita";
     const isPoupanca = t.tipo === "poupanca";
     const valorAssinado = isDespesa ? -t.valor : t.valor;
-    const etiquetaTexto = isDespesa ? "DESPESA" : isReceita ? "RECEITA" : "POUPANÇA";
+    const etiquetaClass = isDespesa
+        ? "etiqueta-despesa"
+        : isReceita
+            ? "etiqueta-receita"
+            : "etiqueta-poupanca";
+    const etiquetaTexto = isDespesa
+        ? "DESPESA"
+        : isReceita
+            ? "RECEITA"
+            : "POUPANÇA";
+    const valorClass = isDespesa ? "negativo" : isPoupanca ? "neutro" : "positivo";
     const div = document.createElement("div");
     div.className = "item-transacao";
     div.innerHTML = `
-<div class="moeda">€</div>
+    <div class="info-transacao">
+      <div class="caixa-icone"><span class="real-icon">€</span></div>
+      <div>
+        <div class="nome-transacao">${t.descricao}</div>
+        <span class="etiqueta ${etiquetaClass}">${etiquetaTexto}</span>
+      </div>
+    </div>
 
-<div class="descricao">${t.descricao}</div>
+    <div class="data-transacao">${t.categoria || "-"}</div>
+    <div class="data-transacao">${t.data || "-"}</div>
 
-<div class="etiqueta">${etiquetaTexto}</div>
+    <div class="valor-transacao ${valorClass}">
+      <span class="valor-numero">${formatEUR(valorAssinado)}</span>
 
-<div class="categoria">${t.categoria || "-"}</div>
-
-<div class="data">${t.data || "-"}</div>
-
-<div class="valor">${formatEUR(valorAssinado)}</div>
-
-<button class="button-editar">✏️</button>
-<button class="button-remover">🗑️</button>
-`;
+      <span class="acoes-fixas">
+        <button class="button-editar" type="button" title="Editar">✏️</button>
+        <button class="button-remover" type="button" title="Remover">🗑️</button>
+      </span>
+    </div>
+  `;
     const btnEditar = div.querySelector(".button-editar");
     if (!btnEditar)
         throw new Error("Botão editar não encontrado");
@@ -192,7 +207,11 @@ function criarItemTransacao(t, refresh) {
         const novaData = pedirData(t.data);
         if (novaData === null)
             return;
-        atualizarTransacao(t.id, { descricao: novaDescricao, valor: novoValor, data: novaData });
+        atualizarTransacao(t.id, {
+            descricao: novaDescricao,
+            valor: novoValor,
+            data: novaData,
+        });
         refresh();
     });
     const btnRemover = div.querySelector(".button-remover");

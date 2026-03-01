@@ -22,7 +22,7 @@ function normalizarTransacao(t: unknown): Transaction {
     valor: Number(obj.valor) || 0,
     tipo: (obj.tipo as Transaction["tipo"]) ?? "receita",
     categoria: String(obj.categoria ?? "Outros"),
-    data: String(obj.data ?? (obj as Record<string, unknown>).date ?? ""),
+    data: String(obj.data ?? obj.date ?? ""),
   };
 }
 
