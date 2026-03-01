@@ -30,7 +30,7 @@ export function adicionarTransacao(nova: TransactionInput): void {
 }
 
 export function removerTransacao(id: string): void {
-  transacoes = transacoes.filter((t) => t.id !== id);
+  transacoes = transacoes.filter((t: Transaction): boolean => t.id !== id);
   salvar();
 }
 
@@ -43,7 +43,7 @@ export function atualizarTransacao(
   id: string,
   camposAtualizados: Partial<TransactionInput>
 ): void {
-  transacoes = transacoes.map((t) => {
+  transacoes = transacoes.map((t: Transaction): Transaction => {
     if (t.id !== id) return t;
     return { ...t, ...camposAtualizados };
   });
@@ -53,7 +53,7 @@ export function atualizarTransacao(
 
 export function calcularTotais(): Totals {
   return transacoes.reduce<Totals>(
-    (acc, t) => {
+    (acc: Totals, t: Transaction): Totals => {
       if (t.tipo === "receita") {
         acc.income += t.valor;
         acc.balance += t.valor;

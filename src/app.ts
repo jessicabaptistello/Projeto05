@@ -58,12 +58,12 @@ function configurarInputDeValor(): void {
   const input = elements.quantidade;
   if (!input) return;
 
-  input.addEventListener("keydown", (e: KeyboardEvent) => {
+  input.addEventListener("keydown", (e: KeyboardEvent): void => {
     const bloquear: string[] = ["e", "E", "+", "-"];
     if (bloquear.includes(e.key)) e.preventDefault();
   });
 
-  input.addEventListener("input", () => {
+  input.addEventListener("input", (): void => {
     input.value = limparTextoDoValor(input.value);
   });
 }
@@ -75,7 +75,7 @@ function aplicarFiltros(transacoes: Transaction[]): Transaction[] {
   const texto: string = (filtroTexto?.value || "").toLowerCase().trim();
   const tipo: string = filtroTipo?.value || "todos";
 
-  return transacoes.filter((t) => {
+  return transacoes.filter((t: Transaction): boolean => {
     const desc: string = (t.descricao || "").toLowerCase();
     const okTexto: boolean = texto === "" || desc.includes(texto);
     const okTipo: boolean = tipo === "todos" || t.tipo === tipo;
@@ -110,14 +110,14 @@ function configurarBotoes(): void {
   const btnLimpar = elements.buttonLimpar;
 
   if (btnAdd) {
-    btnAdd.addEventListener("click", (e: MouseEvent) => {
+    btnAdd.addEventListener("click", (e: MouseEvent): void => {
       e.preventDefault();
       submitTransaction(atualizarTela);
     });
   }
 
   if (btnLimpar) {
-    btnLimpar.addEventListener("click", () => {
+    btnLimpar.addEventListener("click", (): void => {
       const ok: boolean = confirm("Tem certeza que deseja excluir todas as transações?");
       if (!ok) return;
 
@@ -128,7 +128,7 @@ function configurarBotoes(): void {
 
   const botaoExportar = document.querySelector<HTMLElement>(".exportar");
   if (botaoExportar) {
-    botaoExportar.addEventListener("click", () => {
+    botaoExportar.addEventListener("click", (): void => {
       const transacoes: Transaction[] = obterTransacoes();
 
       if (transacoes.length === 0) {
@@ -162,7 +162,7 @@ function configurarBotoes(): void {
   if (filtroTipo) filtroTipo.addEventListener("change", atualizarTela);
 }
 
-document.addEventListener("DOMContentLoaded", () => {
+document.addEventListener("DOMContentLoaded", (): void => {
   const ok: boolean = initUI();
   if (!ok) return;
 

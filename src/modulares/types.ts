@@ -10,7 +10,6 @@ export interface Transaction {
 }
 
 export type TransactionInput = Omit<Transaction, "id">; 
-
 export type Totals = {
   balance: number;
   income: number;

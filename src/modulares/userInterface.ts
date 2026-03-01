@@ -93,12 +93,12 @@ function setStatusClass(el: HTMLElement, status: StatusClass): void {
 
 export function setupCategoryButtons(): void {
   const defaultBtn: HTMLElement | undefined = elements.categoriasbuttons.find(
-    (b) => b.dataset.category === "Outros"
+    (b: HTMLElement): boolean => b.dataset.category === "Outros"
   );
   if (defaultBtn) defaultBtn.classList.add("is-active");
 
   for (const button of elements.categoriasbuttons) {
-    button.addEventListener("click", () => {
+    button.addEventListener("click", (): void => {
       for (const b of elements.categoriasbuttons) b.classList.remove("is-active");
       button.classList.add("is-active");
       elements.categoriaSelecionada = button.dataset.category || "Outros";
@@ -244,7 +244,7 @@ function criarItemTransacao(t: Transaction, refresh: RefreshFn): HTMLDivElement 
 
   const btnEditar = div.querySelector<HTMLButtonElement>(".button-editar");
   if (!btnEditar) throw new Error("Botão editar não encontrado");
-  btnEditar.addEventListener("click", () => {
+  btnEditar.addEventListener("click", (): void => {
     const novaDescricao = pedirDescricao(t.descricao);
     if (novaDescricao === null) return;
 
@@ -265,7 +265,7 @@ function criarItemTransacao(t: Transaction, refresh: RefreshFn): HTMLDivElement 
 
   const btnRemover = div.querySelector<HTMLButtonElement>(".button-remover");
   if (!btnRemover) throw new Error("Botão remover não encontrado");
-  btnRemover.addEventListener("click", () => {
+  btnRemover.addEventListener("click", (): void => {
     removerTransacao(t.id);
     refresh();
   });
