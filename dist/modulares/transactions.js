@@ -3,15 +3,7 @@ import { adicionarTransacao } from "./state.js";
 import { RULES } from "./rules.js";
 const categoriasPorTipo = {
     receita: ["Ordenado", "Outros"],
-    despesa: [
-        "Alimentação",
-        "Educação",
-        "Habitação",
-        "Saúde",
-        "Lazer",
-        "Ginásio",
-        "Outros",
-    ],
+    despesa: ["Alimentação", "Educação", "Habitação", "Saúde", "Lazer", "Ginásio", "Outros"],
     poupanca: ["Poupança", "Outros"],
 };
 function dataDeHojePT() {
@@ -69,7 +61,7 @@ function validarFormulario(data) {
         return false;
     }
     if (!valorTextoEhValido(data.valorTexto)) {
-        alert("Valor inválido. Use exemplo: 10,50 ou 10.50 (máx 7 dígitos e 2 decimais).");
+        alert("Valor inválido.\nUse exemplo: 10,50 ou 10.50 (máx 7 dígitos e 2 decimais).");
         return false;
     }
     const numero = converterValorTextoParaNumero(data.valorTexto);

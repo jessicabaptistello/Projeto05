@@ -72,9 +72,7 @@ export function exportarCSV() {
     }
     const lines = [header.join(",")];
     for (const t of transacoes) {
-        lines.push([t.id, t.descricao, t.valor, t.tipo, t.categoria, t.data]
-            .map(escapeCSV)
-            .join(","));
+        lines.push([t.id, t.descricao, t.valor, t.tipo, t.categoria, t.data].map(escapeCSV).join(","));
     }
     return lines.join("\n");
 }

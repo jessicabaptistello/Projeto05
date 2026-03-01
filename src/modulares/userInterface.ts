@@ -47,7 +47,6 @@ export function initUI(): boolean {
 
   elements.buttonAdicionar = $(".adiciona-historia") as HTMLButtonElement | null;
   elements.buttonLimpar = $(".limpar-tudo") as HTMLButtonElement | null;
-
   elements.lista = $(".lista-transacoes");
 
   elements.totalBalance = byId<HTMLElement>("total-balance");
@@ -55,9 +54,7 @@ export function initUI(): boolean {
   elements.totalExpense = byId<HTMLElement>("total-expense");
   elements.totalSavings = byId<HTMLElement>("total-savings");
 
-  elements.categoriasbuttons = Array.from(
-    document.querySelectorAll<HTMLElement>(".categorias")
-  );
+  elements.categoriasbuttons = Array.from(document.querySelectorAll(".categorias"));
 
   const missing: string[] = [];
   if (!elements.descricao) missing.push("#descricao");
@@ -73,7 +70,7 @@ export function initUI(): boolean {
 
   if (missing.length > 0) {
     console.error("Elementos não encontrados:", missing);
-    alert("Erro. Veja o Console (F12).");
+    alert("Erro.\nVeja o Console (F12).");
     return false;
   }
 
@@ -95,6 +92,7 @@ export function setupCategoryButtons(): void {
   const defaultBtn: HTMLElement | undefined = elements.categoriasbuttons.find(
     (b) => b.dataset.category === "Outros"
   );
+
   if (defaultBtn) defaultBtn.classList.add("is-active");
 
   for (const button of elements.categoriasbuttons) {
@@ -127,10 +125,7 @@ export function renderTotals(): void {
 
 function pedirDescricao(atual: string): string | null {
   while (true) {
-    const input: string | null = prompt(
-      `Descrição (máx ${RULES.DESCRICAO_MAX}):`,
-      atual
-    );
+    const input: string | null = prompt(`Descrição (máx ${RULES.DESCRICAO_MAX}):`, atual);
     if (input === null) return null;
 
     const desc: string = input.trim();
@@ -152,10 +147,10 @@ function pedirValor(atual: number): number | null {
     if (input === null) return null;
 
     const txt: string = input.trim();
-
     const pattern: RegExp = /^\d+([.,]\d{1,2})?$/;
+
     if (!pattern.test(txt)) {
-      alert("Valor inválido. Ex: 10,50 ou 10.50");
+      alert("Valor inválido.\nEx: 10,50 ou 10.50");
       continue;
     }
 
@@ -176,7 +171,6 @@ function pedirValor(atual: number): number | null {
       alert("Valor inválido.");
       continue;
     }
-
     if (num < RULES.VALOR_MIN) {
       alert(`O valor deve ser maior que ${RULES.VALOR_MIN}.`);
       continue;
@@ -203,47 +197,31 @@ function criarItemTransacao(t: Transaction, refresh: RefreshFn): HTMLDivElement 
 
   const valorAssinado: number = isDespesa ? -t.valor : t.valor;
 
-  const etiquetaClass: string = isDespesa
-    ? "etiqueta-despesa"
-    : isReceita
-    ? "etiqueta-receita"
-    : "etiqueta-poupanca";
-
-  const etiquetaTexto: string = isDespesa
-    ? "DESPESA"
-    : isReceita
-    ? "RECEITA"
-    : "POUPANÇA";
-
-  const valorClass: string = isDespesa ? "negativo" : isPoupanca ? "neutro" : "positivo";
+  const etiquetaTexto: string = isDespesa ? "DESPESA" : isReceita ? "RECEITA" : "POUPANÇA";
 
   const div: HTMLDivElement = document.createElement("div");
   div.className = "item-transacao";
 
   div.innerHTML = `
-    <div class="info-transacao">
-      <div class="caixa-icone"><span class="real-icon">€</span></div>
-      <div>
-        <div class="nome-transacao">${t.descricao}</div>
-        <span class="etiqueta ${etiquetaClass}">${etiquetaTexto}</span>
-      </div>
-    </div>
+<div class="moeda">€</div>
 
-    <div class="data-transacao">${t.categoria || "-"}</div>
-    <div class="data-transacao">${t.data || "-"}</div>
+<div class="descricao">${t.descricao}</div>
 
-    <div class="valor-transacao ${valorClass}">
-      <span class="valor-numero">${formatEUR(valorAssinado)}</span>
+<div class="etiqueta">${etiquetaTexto}</div>
 
-      <span class="acoes-fixas">
-        <button class="button-editar" type="button" title="Editar">✏️</button>
-        <button class="button-remover" type="button" title="Remover">🗑️</button>
-      </span>
-    </div>
-  `;
+<div class="categoria">${t.categoria || "-"}</div>
 
-  const btnEditar = div.querySelector<HTMLButtonElement>(".button-editar");
+<div class="data">${t.data || "-"}</div>
+
+<div class="valor">${formatEUR(valorAssinado)}</div>
+
+<button class="button-editar">✏️</button>
+<button class="button-remover">🗑️</button>
+`;
+
+  const btnEditar = div.querySelector(".button-editar");
   if (!btnEditar) throw new Error("Botão editar não encontrado");
+
   btnEditar.addEventListener("click", () => {
     const novaDescricao = pedirDescricao(t.descricao);
     if (novaDescricao === null) return;
@@ -254,17 +232,13 @@ function criarItemTransacao(t: Transaction, refresh: RefreshFn): HTMLDivElement 
     const novaData = pedirData(t.data);
     if (novaData === null) return;
 
-    atualizarTransacao(t.id, {
-      descricao: novaDescricao,
-      valor: novoValor,
-      data: novaData,
-    });
-
+    atualizarTransacao(t.id, { descricao: novaDescricao, valor: novoValor, data: novaData });
     refresh();
   });
 
-  const btnRemover = div.querySelector<HTMLButtonElement>(".button-remover");
+  const btnRemover = div.querySelector(".button-remover");
   if (!btnRemover) throw new Error("Botão remover não encontrado");
+
   btnRemover.addEventListener("click", () => {
     removerTransacao(t.id);
     refresh();
@@ -276,6 +250,7 @@ function criarItemTransacao(t: Transaction, refresh: RefreshFn): HTMLDivElement 
 export function renderList(transactions: Transaction[], refresh: RefreshFn): void {
   const lista = elements.lista!;
   lista.innerHTML = "";
+
   for (const t of transactions) {
     lista.appendChild(criarItemTransacao(t, refresh));
   }

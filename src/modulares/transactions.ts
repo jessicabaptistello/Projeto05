@@ -5,15 +5,7 @@ import type { RefreshFn, TransactionInput, TransactionType } from "./types.js";
 
 const categoriasPorTipo: Record<TransactionType, string[]> = {
   receita: ["Ordenado", "Outros"],
-  despesa: [
-    "Alimentação",
-    "Educação",
-    "Habitação",
-    "Saúde",
-    "Lazer",
-    "Ginásio",
-    "Outros",
-  ],
+  despesa: ["Alimentação", "Educação", "Habitação", "Saúde", "Lazer", "Ginásio", "Outros"],
   poupanca: ["Poupança", "Outros"],
 };
 
@@ -26,11 +18,10 @@ type FormData = {
   valorTexto: string;
   tipo: TransactionType;
   categoria: string;
-  valor?: number; 
+  valor?: number;
 };
 
 function lerFormulario(): FormData {
-
   const descricaoEl = elements.descricao!;
   const quantidadeEl = elements.quantidade!;
   const tipoEl = elements.tipo!;
@@ -45,7 +36,6 @@ function lerFormulario(): FormData {
 
 function valorTextoEhValido(valorTexto: string): boolean {
   const txt: string = String(valorTexto).trim();
-
   const pattern: RegExp = /^\d+([.,]\d{1,2})?$/;
   if (!pattern.test(txt)) return false;
 
@@ -82,9 +72,7 @@ function validarFormulario(data: FormData): boolean {
 
   const permitidas: string[] = categoriasPorTipo[data.tipo] || [];
   if (!permitidas.includes(data.categoria)) {
-    alert(
-      `A categoria "${data.categoria}" não pode ser usada com o tipo "${data.tipo}".`
-    );
+    alert(`A categoria "${data.categoria}" não pode ser usada com o tipo "${data.tipo}".`);
     return false;
   }
 
@@ -94,14 +82,11 @@ function validarFormulario(data: FormData): boolean {
   }
 
   if (!valorTextoEhValido(data.valorTexto)) {
-    alert(
-      "Valor inválido. Use exemplo: 10,50 ou 10.50 (máx 7 dígitos e 2 decimais)."
-    );
+    alert("Valor inválido.\nUse exemplo: 10,50 ou 10.50 (máx 7 dígitos e 2 decimais).");
     return false;
   }
 
   const numero: number = converterValorTextoParaNumero(data.valorTexto);
-
   if (!numero || Number.isNaN(numero)) {
     alert("Valor inválido.");
     return false;
@@ -137,7 +122,7 @@ function enviarTransacao(refresh: RefreshFn): void {
 
   const payload: TransactionInput = {
     descricao: data.descricao,
-    valor: data.valor!, 
+    valor: data.valor!,
     tipo: data.tipo,
     categoria: data.categoria,
     data: dataDeHojePT(),
